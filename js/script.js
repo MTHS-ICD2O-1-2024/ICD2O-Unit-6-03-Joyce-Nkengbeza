@@ -3,8 +3,7 @@
 // Created by: Joyce Nkengbeza
 // Created on: Feb 2025
 // This file contains the JS functions for index.html
-'use strict'
-
+"use strict"
 
 /**
  * Check servie worker.
@@ -14,21 +13,30 @@ if (navigator.serviceWorker) {
     scope: "/ICD2O-Unit-6-01-Joyce-Nkengbeza/",
   })
 }
- //This function multiples numbers
+/**
+ * This function gets the weather.
+ * The "async" is there because it will take time for the internet to return the value
+ */
+async function checkWeather() {
+  // the "try" is here because the internet may not be working
+  // it is like an "if ... else" statement"
+  try {
+    const resultJSON = await fetch(
+      "https://api.openweathermap.org/data/2.5/weather?lat=45.4211435&lon=-75.6900574&units=metric&appid=fe1d80e1e103cff8c6afd190cad23fa5"
+    )
+    const jsonData = await resultJSON.json()
+    console.log(jsonData)
+    const weatherRightNow = jsonData.weather[0].description
+    const temperature = jsonData.main.temp
 
-function calculate() {
-
- // input
-  let firstNumber = parseFloat(document.getElementById("numberone").value)
-  const secondNumber = parseFloat(document.getElementById("numbertwo").value)
-  let answer = 0
-
-  // process
-  while (firstNumber >= 1) {
-    answer = answer + secondNumber
-  firstNumber = firstNumber - 1;
+    // output
+    document.getElementById("weather").innerHTML =
+      "<p>The current weather is: " +
+      weatherRightNow +
+      ", " +
+      temperature +
+      "°C</p>"
+  } catch (error) {
+    console.error(error)
   }
-  // output
-  document.getElementById("results").innerHTML =
-  'The number is: ' + answer
 }
